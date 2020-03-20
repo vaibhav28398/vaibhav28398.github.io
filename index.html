@@ -29,7 +29,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  display: flex;
+  /*display: flex;*/
   color: white;
   font-size: 3em;
   text-transform: uppercase;
@@ -47,11 +47,16 @@
     box-shadow: 0 20px 0 #eee;
     transform: translateY(-35px);
   }
-}</style>
+}
+#myDiv
+{
+	display: none;
+	}</style>
 
   </head>
-  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-<div class="loading">Vaibhav</div>
+  <body onload="myFunction()" data-spy="scroll" data-target=".site-navbar-target" data-offset="300" >
+<div class="loading" id="loader">Vaibhav</div>
+<div  id="myDiv" >
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target" id="ftco-navbar">
     	
 	    <div class="container">
@@ -91,7 +96,7 @@
             </div>
           </div>
         </div>
-      </div>
+      
       <div class="mouse">
 				<a href="#" class="mouse-icon">
 					<div class="mouse-wheel"><span class="ion-ios-arrow-round-down"></span></div>
@@ -806,14 +811,41 @@
         </div>
       </div>
     </footer>
-    
+    </div>
   
 
   <!-- loader -->
 <!--   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div> -->
 	  
 
-  <script src="js/jquery.min.js"></script>
+  
+  
+
+      <script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 3000);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+
+    let loading = document.querySelector(".loading");
+let letters = loading.textContent.split("");
+
+loading.textContent = "";
+letters.forEach((letter, i) => {
+  let span = document.createElement("span");
+  span.textContent = letter;
+  span.style.animationDelay = `${i / 5}s`;
+  span.className="loader-span";
+  loading.append(span);
+});</script>
+
+<script src="js/jquery.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -827,28 +859,5 @@
   <script src="js/scrollax.min.js"></script>
   
   <script src="js/main.js"></script>
-  <script type="text/javascript">$(document).ready(function() {
-//Preloader
-preloaderFadeOutTime = 2000;
-function hidePreloader() {
-var preloader = $('.loading');
-preloader.fadeOut(preloaderFadeOutTime);
-}
-hidePreloader();
-});</script> 
-
-      
-      <script type="text/javascript">
-    let loading = document.querySelector(".loading");
-let letters = loading.textContent.split("");
-
-loading.textContent = "";
-letters.forEach((letter, i) => {
-  let span = document.createElement("span");
-  span.textContent = letter;
-  span.style.animationDelay = `${i / 5}s`;
-  span.className="loader-span";
-  loading.append(span);
-});</script>
   </body>
 </html>
