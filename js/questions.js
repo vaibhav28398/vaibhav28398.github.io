@@ -2,71 +2,82 @@
 let questions = [
     {
     numb: 1,
-    question: "What does HTML stand for?",
-    answer: "Hyper Text Markup Language",
+    question: "Who's the better chef when it comes to instant noodles",
+    answer: "They both burn them equally",
     options: [
-      "Hyper Text Preprocessor",
-      "Hyper Text Markup Language",
-      "Hyper Text Multiple Language",
-      "Hyper Tool Multi Language"
+      "Apoorv",
+      "Anjali",
+      "They are both equally amazing",
+      "They both burn them equally"
     ]
   },
     {
     numb: 2,
-    question: "What does CSS stand for?",
-    answer: "Cascading Style Sheet",
+    question: "What's their shared hobby or interest?",
+    answer: "Cafe Hopping",
     options: [
-      "Common Style Sheet",
-      "Colorful Style Sheet",
-      "Computer Style Sheet",
-      "Cascading Style Sheet"
+      "Hiking and outdoor adventures",
+      "Binge-watching TV shows",
+      "Cafe Hopping",
+      "Gardening and plant care"
     ]
   },
     {
     numb: 3,
-    question: "What does PHP stand for?",
-    answer: "Hypertext Preprocessor",
+    question: "Who's in charge of killing spiders and bugs in the relationship?",
+    answer: "Apoorv",
     options: [
-      "Hypertext Preprocessor",
-      "Hypertext Programming",
-      "Hypertext Preprogramming",
-      "Hometext Preprocessor"
+      "Apoorv",
+      "Anjali",
+      "They both scream and run away",
+      "They hire a professional bug assassin"
     ]
   },
     {
     numb: 4,
-    question: "What does SQL stand for?",
-    answer: "Structured Query Language",
+    question: "Who's more likely to lose their keys or phone?",
+    answer: "Apoorv",
     options: [
-      "Stylish Question Language",
-      "Stylesheet Query Language",
-      "Statement Question Language",
-      "Structured Query Language"
+      "Apoorv",
+      "Anjali",
+      "They both lose things equally",
+      "They've hired a detective to find their stuff"
     ]
   },
     {
     numb: 5,
-    question: "What does XML stand for?",
-    answer: "eXtensible Markup Language",
+    question: "Who's more likely to forget their anniversary?",
+    answer: "They've set multiple reminders",
     options: [
-      "eXtensible Markup Language",
-      "eXecutable Multiple Language",
-      "eXTra Multi-Program Language",
-      "eXamine Multiple Language"
+      "Apoorv",
+      "Anjali",
+      "They've set multiple reminders",
+      "They celebrate every day just in case"
     ]
   },
   // you can uncomment the below codes and make duplicate as more as you want to add question
   // but remember you need to give the numb value serialize like 1,2,3,5,6,7,8,9.....
 
-  //   {
-  //   numb: 6,
-  //   question: "Your Question is Here",
-  //   answer: "Correct answer of the question is here",
-  //   options: [
-  //     "Option 1",
-  //     "option 2",
-  //     "option 3",
-  //     "option 4"
-  //   ]
-  // },
+    {
+    numb: 6,
+    question: "Who is the better driver in the relationship?",
+    answer: "They both believe they're the better driver",
+    options: [
+      "Apoorv",
+      "Anjali",
+      "They both believe they're the better driver",
+      "They use public transportation to avoid the debate"
+    ]
+  },
+  {
+    numb: 7,
+    question: "Who is the early bird in the relationship?",
+    answer: "Anjali",
+    options: [
+      "Apoorv",
+      "Anjali",
+      "They're both night owls",
+      "They take turns being early birds"
+    ]
+  },
 ];
