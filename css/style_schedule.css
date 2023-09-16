@@ -195,6 +195,7 @@
     .timeline__event {
       flex-direction: column;
       align-self: center;
+      width: 100%;
     }
   
     .timeline__event__content {
