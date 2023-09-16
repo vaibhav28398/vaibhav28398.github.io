@@ -40,6 +40,7 @@ let widthValue = 0;
 
 const restart_quiz = result_box.querySelector(".buttons .restart");
 const quit_quiz = result_box.querySelector(".buttons .quit");
+const quit_quiz1 = document.querySelector(".exit_quiz");
 
 // if restartQuiz button clicked
 restart_quiz.onclick = ()=>{
@@ -62,6 +63,11 @@ restart_quiz.onclick = ()=>{
 
 // if quitQuiz button clicked
 quit_quiz.onclick = ()=>{
+    window.location.reload(); //reload the current window
+}
+
+// if quitQuiz button clicked
+quit_quiz1.onclick = ()=>{
     window.location.reload(); //reload the current window
 }
 
