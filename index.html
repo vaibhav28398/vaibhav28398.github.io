@@ -104,7 +104,7 @@
 							<h1>Apoorv &amp; Anjali</h1>
 							<h2>We Are Getting Married</h2>
 							<div class="simply-countdown simply-countdown-one"></div>
-							<p><a href="saveTheDate.ics" download="event.ics" class="btn btn-default btn-sm">Save the date</a></p>
+							<p><button onclick="saveEvent()" class="btn btn-default btn-sm">Save the date</button></p>
 						</div>
 					</div>
 				</div>
@@ -640,6 +640,39 @@ var d = new Date(new Date().getTime() + duration);
         day: d.getDate(),
         enableUtc: false
     });
+
+	function generateICSContent() {
+		const icsContent = `BEGIN:VCALENDAR
+		VERSION:2.0
+		PRODID:-//Your Website//EN
+		METHOD:PUBLISH
+		BEGIN:VEVENT
+		SUMMARY:Apoorv & Anjali's wedding festivities
+		DESCRIPTION:Join us for the Haldi, Mehendi, Wedding, Reception of Apoorv & Anjali
+		LOCATION:The Elite Convention, Lucknow
+		DTSTART:20231208T100000
+		DTEND:20231210T120000
+		END:VEVENT
+		END:VCALENDAR`;
+
+		return icsContent;
+	}
+
+	function saveEvent() {
+		const icsContent = generateICSContent();
+		const blob = new Blob([icsContent], { type: 'text/calendar' });
+		const url = window.URL.createObjectURL(blob);
+		
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'event.ics';
+		
+		document.body.appendChild(a);
+		a.click();
+		
+		// Cleanup
+		window.URL.revokeObjectURL(url);
+	}
 </script>
 
 	</body>
