@@ -384,3 +384,17 @@ footer button.show{
     color: #fff;
     background: #F14E95;
 }
+
+@media (max-width: 786px) {
+.info_box {
+    width: 100%;
+}
+
+.quiz_box {
+    width: 100%;
+}
+
+.result_box {
+    width: 100%;
+}
+}
