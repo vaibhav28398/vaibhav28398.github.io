@@ -143,7 +143,7 @@
 				</div>
 			</div>
 			<div class="know-the-couple text-center" style="margin-top: 250px;">
-			<p><a href="gallery.html" style="color: #F14E95;" class="btn btn-default btn-sm">KNOW THE COUPLE!!</a></p></div>
+			<p><a href="gallery.html" style="background-color: #F14E95; color: #fff;" class="btn btn-default btn-sm">KNOW THE COUPLE!!</a></p></div>
 		</div>
 	</div>
 
@@ -572,6 +572,7 @@
 			</div>
 		</div>
 	</div>
+	<div id="map" class="fh5co-map"></div>
 
 	<footer id="fh5co-footer" role="contentinfo">
 		<div class="container">
@@ -618,6 +619,7 @@
 
 	<!-- // <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script> -->
 	<script src="js/simplyCountdown.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2NZO5ZGPSGNUQho69U8DcnIbg9SIPRC8&callback=initMap" async defer></script>
 	<!-- Main -->
 	<script src="js/main.js"></script>
 
@@ -674,6 +676,19 @@ var d = new Date(new Date().getTime() + duration);
 		
 		// Cleanup
 		window.URL.revokeObjectURL(url);
+	}
+	function initMap() {
+		const weddingLocation = { lat: 26.83563275114034, lng: 80.85540327403629 }; // Replace with your wedding location's coordinates
+		const map = new google.maps.Map(document.getElementById('map'), {
+			center: weddingLocation,
+			zoom: 15, // Adjust the zoom level as needed
+		});
+		// Add a marker for the wedding location
+		const marker = new google.maps.Marker({
+			position: weddingLocation,
+			map: map,
+			title: 'Wedding Location', // Optional title for the marker
+		});
 	}
 </script>
 
