@@ -57,6 +57,7 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/style_schedule.css">
+	<link rel="stylesheet" href="css/style_slider.css">
 
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
@@ -226,9 +227,25 @@
 			</div>
 		</div>
 	</div>
-	<div id="fh5co-couple">
+	<div id="fh5co-couple" class="fh5co-section-gray">
 		<div class="container">
-<div class="timeline1">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading animate-box">
+					<!-- <span>We Love Each Other</span> -->
+					<h2>Schedule</h2>
+					<!-- <p>Two hearts intertwined, their love story unfolded, creating a tapestry of cherished memories and a bond that will stand the test of time.</p> -->
+				</div>
+			</div>
+			<div class="schedule">
+				<div class="day" onclick="showPlan('day1', this)">Day 1: 8th Dec'23</div>
+				<div class="day" onclick="showPlan('day2', this)">Day 2: 9th Dec'23</div>
+				<div class="day" onclick="showPlan('day3', this)">Day 3: 10th Dec'23</div>
+			</div>
+			<!-- <div class="plan">
+				<h2>Day 1 Plan</h2>
+				<p>Plan for Day 1 goes here...</p>
+			</div> -->
+<div class="timeline1 plan" id="day1">
 
 	<!--first-->
 	<div class="timeline__event  animated fadeInUp delay-3s timeline__event--type1">
@@ -310,6 +327,8 @@
 		</div>
 	</div>
 
+</div>
+<div class="timeline1 plan" id="day2">
 	<!--first-->
 	<div class="timeline__event  animated fadeInUp delay-3s timeline__event--type1">
 		<div class="timeline__event__icon ">
@@ -389,7 +408,8 @@
 			</div>
 		</div>
 	</div>
-
+</div>
+<div class="timeline1 plan" id="day3">
 	<!--first-->
 	<div class="timeline__event  animated fadeInUp delay-3s timeline__event--type1">
 		<div class="timeline__event__icon ">
@@ -463,245 +483,6 @@
 		<div class="timeline__event__content">
 			<div class="timeline__event__title">
 				Super Mario Galaxy
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--first-->
-	<div class="timeline__event  animated fadeInUp delay-3s timeline__event--type1">
-		<div class="timeline__event__icon ">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			November 2009
-		</div>
-		<div class="timeline__event__content ">
-			<div class="timeline__event__title">
-				New Super Mario Bros. Wii
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--second-->
-
-	<div class="timeline__event animated fadeInUp delay-2s timeline__event--type2">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			May 2010
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario Galaxy 2
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--third-->
-
-	<div class="timeline__event animated fadeInUp delay-1s timeline__event--type3">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			November 2011
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario 3D Land
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-
-		</div>
-	</div>
-
-	<!--forth-->
-
-	<div class="timeline__event animated fadeInUp timeline__event--type1">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			July 2012
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				New Super Mario Bros 2
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--first-->
-	<div class="timeline__event  animated fadeInUp delay-3s timeline__event--type1">
-		<div class="timeline__event__icon ">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			November 2012
-		</div>
-		<div class="timeline__event__content ">
-			<div class="timeline__event__title">
-				New Super Mario Bros. U
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--second-->
-
-	<div class="timeline__event animated fadeInUp delay-2s timeline__event--type2">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			November 2013
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario 3D World
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--third-->
-
-	<div class="timeline__event animated fadeInUp delay-1s timeline__event--type3">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			September 2015
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario Maker
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-
-		</div>
-	</div>
-
-	<!--forth-->
-
-	<div class="timeline__event animated fadeInUp timeline__event--type1">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			December 2016
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario Run
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--first-->
-	<div class="timeline__event  animated fadeInUp delay-3s timeline__event--type1">
-		<div class="timeline__event__icon ">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			October 2017
-		</div>
-		<div class="timeline__event__content ">
-			<div class="timeline__event__title">
-				Super Mario Odyssey
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--second-->
-
-	<div class="timeline__event animated fadeInUp delay-2s timeline__event--type2">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			June 2019
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario Maker 2
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-		</div>
-	</div>
-
-	<!--third-->
-
-	<div class="timeline__event animated fadeInUp delay-1s timeline__event--type3">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			February 2021
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario 3D World + Bowser's Fury
-			</div>
-			<div class="timeline__event__description">
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
-			</div>
-
-		</div>
-	</div>
-	<!--forth-->
-
-	<div class="timeline__event animated fadeInUp timeline__event--type1">
-		<div class="timeline__event__icon">
-			<!-- <i class="lni-sport"></i>-->
-
-		</div>
-		<div class="timeline__event__date">
-			December 2016
-		</div>
-		<div class="timeline__event__content">
-			<div class="timeline__event__title">
-				Super Mario Run
 			</div>
 			<div class="timeline__event__description">
 				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel, nam! Nam eveniet ut aliquam ab asperiores, accusamus iure veniam corporis incidunt reprehenderit accusantium id aut architecto harum quidem dolorem in!</p>
@@ -1177,6 +958,30 @@ var d = new Date(new Date().getTime() + duration);
 			title: 'Wedding Location', // Optional title for the marker
 		});
 	}
+	window.onload = function() {
+		const day1Tile = document.querySelector('.day');
+		showPlan('day1', day1Tile);
+}
+function showPlan(day, element) {
+    // Hide all plans
+    const plans = document.querySelectorAll('.plan');
+    plans.forEach(plan => {
+        plan.style.display = 'none';
+    });
+
+    // Show the plan for the clicked day
+    const selectedPlan = document.getElementById(day);
+    selectedPlan.style.display = 'block';
+
+    // Remove the "selected" class from all day tiles
+    const dayTiles = document.querySelectorAll('.day');
+    dayTiles.forEach(tile => {
+        tile.classList.remove('day-selected');
+    });
+
+    // Add the "selected" class to the clicked day tile
+    element.classList.add('day-selected');
+}
 </script>
 
 	</body>
