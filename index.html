@@ -106,7 +106,7 @@
 							<h1>Apoorv &amp; Anjali</h1>
 							<h2>We Are Getting Married</h2>
 							<div class="simply-countdown simply-countdown-one"></div>
-							<p><button onclick="saveEvent()" class="btn btn-default btn-sm">Save the date</button></p>
+							<p><button onclick="saveTheDate()" class="btn btn-default btn-sm">Save the date</button></p>
 						</div>
 					</div>
 				</div>
@@ -985,38 +985,6 @@ var d = new Date(new Date().getTime() + duration);
         enableUtc: false
     });
 
-	function generateICSContent() {
-		const icsContent = `BEGIN:VCALENDAR
-		VERSION:2.0
-		PRODID:-//Your Website//EN
-		METHOD:PUBLISH
-		BEGIN:VEVENT
-		SUMMARY:Apoorv & Anjali's wedding festivities
-		DESCRIPTION:Join us for the Haldi, Mehendi, Wedding, Reception of Apoorv & Anjali
-		LOCATION:The Elite Convention, Lucknow
-		DTSTART:20231208T100000
-		DTEND:20231210T120000
-		END:VEVENT
-		END:VCALENDAR`;
-
-		return icsContent;
-	}
-
-	function saveEvent() {
-		const icsContent = generateICSContent();
-		const blob = new Blob([icsContent], { type: 'text/calendar' });
-		const url = window.URL.createObjectURL(blob);
-		
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = 'event.ics';
-		
-		document.body.appendChild(a);
-		a.click();
-		
-		// Cleanup
-		window.URL.revokeObjectURL(url);
-	}
 	function initMap() {
 		const weddingLocation = { lat: 26.83563275114034, lng: 80.85540327403629 }; // Replace with your wedding location's coordinates
 		const map = new google.maps.Map(document.getElementById('map'), {
@@ -1053,6 +1021,31 @@ function showPlan(day, element) {
 
     // Add the "selected" class to the clicked day tile
     element.classList.add('day-selected');
+}
+
+function saveTheDate() {
+  var event = {
+  'summary': 'Apoorv and Anjali wedding festivities',  // Replace with your event title
+  'location': 'The Elite Convention, Lucknow',   // Replace with your event location
+  'description': 'Join us for the Haldi, Mehendi, Wedding, Reception of Apoorv and Anjali',  // Replace with your event description
+  'start': {
+    'dateTime': '20231208T100000'  // Use "Asia/Kolkata" for Indian Standard Time
+  },
+  'end': {
+    'dateTime': '20231210T230000',  // Use "Asia/Kolkata" for Indian Standard Time
+  },
+  'reminders': {
+    'useDefault': false,
+    'overrides': [
+      {'method': 'popup', 'minutes': 30},  // Customize reminders as needed
+    ],
+  },
+};
+
+
+  var url = 'https://www.google.com/calendar/render?action=TEMPLATE&text=' + event.summary + '&dates=' + event.start.dateTime + '/' + event.end.dateTime + '&details=' + event.description + '&location=' + event.location + '&sf=true&output=xml';
+
+  window.open(url, '_blank');
 }
 </script>
 
