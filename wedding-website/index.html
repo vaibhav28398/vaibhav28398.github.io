@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <!-- Swap no-js → js as early as possible so reveal styles only apply when JS runs -->
+  <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fbf7f0" />
+  <title>Vaibhav & Nishita — We're Getting Married</title>
+  <meta name="description" content="Join Vaibhav & Nishita as they celebrate their wedding — December 10, 2026, Lucknow, India. Save the date." />
+
+  <!-- ===== Fonts ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ===== Styles ===== -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/loader.css" />
+  <link rel="stylesheet" href="css/easter.css" />
+  <link rel="stylesheet" href="css/fortune.css" />
+  <link rel="stylesheet" href="css/quiz.css" />
+  <link rel="stylesheet" href="css/postcard.css" />
+  <link rel="stylesheet" href="css/mixtape.css" />
+  <link rel="stylesheet" href="css/wishes.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' font-family='Georgia' font-style='italic'%3E%26%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- =========================================================
+       THE UNVEILING  ·  velvet curtains + scratch-to-reveal date
+  ========================================================== -->
+  <div class="loader" id="loader">
+    <div class="loader__valance" aria-hidden="true"></div>
+
+    <div class="loader__curtain loader__curtain--l" aria-hidden="true">
+      <span class="loader__tie"></span>
+    </div>
+    <div class="loader__curtain loader__curtain--r" aria-hidden="true">
+      <span class="loader__tie"></span>
+    </div>
+
+    <div class="loader__stage">
+      <p class="loader__eyebrow">You're invited to</p>
+
+      <div class="loader__card">
+        <div class="loader__card-under">
+          <span class="loader__save">Save the Date</span>
+          <span class="loader__date">10 · 12 · 2026</span>
+          <span class="loader__place">Lucknow</span>
+        </div>
+        <canvas class="loader__scratch" id="scratchCanvas" aria-hidden="true"></canvas>
+        <span class="loader__hint">Scratch the gold to reveal</span>
+      </div>
+
+      <button class="loader__enter" id="loaderEnter">
+        <span>Enter our celebration ✦</span>
+      </button>
+      <button class="loader__skip" id="loaderSkip">Skip intro</button>
+    </div>
+  </div>
+
+  <!-- Custom cursor (desktop only, JS-toggled) -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+  <!-- Floating petals canvas -->
+  <canvas id="petals" class="petals-canvas" aria-hidden="true"></canvas>
+
+  <!-- Confetti canvas (easter eggs + celebrations) -->
+  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- =========================================================
+       HEADER / NAV
+  ========================================================== -->
+  <header class="header" id="header">
+    <nav class="nav" aria-label="Primary">
+      <a href="#home" class="nav__brand" data-cursor="link">
+        <span class="nav__brand-mono">V<em>&amp;</em>N</span>
+      </a>
+
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#story" class="nav__link" data-cursor="link">The Couple</a></li>
+        <li><a href="#countdown" class="nav__link" data-cursor="link">Countdown</a></li>
+        <li><a href="#events" class="nav__link" data-cursor="link">Events</a></li>
+        <li><a href="#gallery" class="nav__link" data-cursor="link">Gallery</a></li>
+        <li><a href="#fortune" class="nav__link" data-cursor="link">Fortune</a></li>
+        <li><a href="#quiz" class="nav__link" data-cursor="link">Quiz</a></li>
+        <li><a href="#postcard" class="nav__link" data-cursor="link">Postcard</a></li>
+        <li><a href="#mixtape" class="nav__link" data-cursor="link">Mixtape</a></li>
+        <li><a href="#wishes" class="nav__link" data-cursor="link">Wishing Sky</a></li>
+        <li><a href="#travel" class="nav__link" data-cursor="link">Travel</a></li>
+        <li><a href="#rsvp" class="nav__link nav__link--cta" data-cursor="link">RSVP</a></li>
+      </ul>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Full-screen mobile / overlay menu -->
+  <div class="menu-overlay" id="menuOverlay" aria-hidden="true">
+    <div class="menu-overlay__bg"></div>
+    <nav class="menu-overlay__nav" aria-label="Overlay">
+      <a href="#story" class="menu-overlay__link"><i>01</i>Meet the Couple</a>
+      <a href="#events" class="menu-overlay__link"><i>02</i>Events</a>
+      <a href="#gallery" class="menu-overlay__link"><i>03</i>Gallery</a>
+      <a href="#fortune" class="menu-overlay__link"><i>04</i>Fortune Teller</a>
+      <a href="#quiz" class="menu-overlay__link"><i>05</i>Couple Quiz</a>
+      <a href="#postcard" class="menu-overlay__link"><i>06</i>Postcard Studio</a>
+      <a href="#mixtape" class="menu-overlay__link"><i>07</i>First-Dance Mixtape</a>
+      <a href="#wishes" class="menu-overlay__link"><i>08</i>Wishing Sky</a>
+      <a href="#travel" class="menu-overlay__link"><i>09</i>Travel &amp; Stay</a>
+      <a href="#rsvp" class="menu-overlay__link"><i>10</i>RSVP</a>
+    </nav>
+    <div class="menu-overlay__foot">
+      <span class="script">See you soon</span>
+      <span class="menu-overlay__date">10 · 12 · 2026 — Lucknow</span>
+    </div>
+  </div>
+
+  <main>
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+    <section class="hero" id="home">
+      <div class="hero__bg" data-parallax="0.25">
+        <!-- Replace with your own hero photo -->
+        <img src="img/hero.jpg" alt="" />
+        <div class="hero__overlay"></div>
+      </div>
+
+      <div class="hero__frame" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <p class="hero__eyebrow reveal" data-reveal>
+          <span class="line"></span> We're getting married <span class="line"></span>
+        </p>
+
+        <h1 class="hero__names">
+          <span class="hero__name" data-split>Vaibhav</span>
+          <span class="hero__amp script">&amp;</span>
+          <span class="hero__name" data-split>Nishita</span>
+        </h1>
+
+        <p class="hero__date reveal" data-reveal>
+          Thursday, the Tenth of December
+          <b>Two Thousand Twenty-Six · Lucknow, India</b>
+        </p>
+
+        <a href="#rsvp" class="btn btn--hero reveal" data-reveal data-cursor="link">
+          <span>Reserve your seat</span>
+        </a>
+      </div>
+
+      <a href="#story" class="hero__scroll" aria-label="Scroll down" data-cursor="link">
+        <span class="hero__scroll-text">Scroll</span>
+        <span class="hero__scroll-line"></span>
+      </a>
+    </section>
+
+    <!-- =========================================================
+         MARQUEE RIBBON
+    ========================================================== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Save the Date <em>✦</em> Together Forever <em>✦</em> 10 · 12 · 2026 <em>✦</em> Lucknow, India <em>✦</em> </span>
+        <span>Save the Date <em>✦</em> Together Forever <em>✦</em> 10 · 12 · 2026 <em>✦</em> Lucknow, India <em>✦</em> </span>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         INTRO / INVITATION
+    ========================================================== -->
+    <section class="intro section" id="intro">
+      <div class="intro__ornament reveal" data-reveal>
+        <svg viewBox="0 0 200 40" aria-hidden="true"><path d="M0 20 H70 M130 20 H200" /><circle cx="100" cy="20" r="6"/><path d="M85 20 q15 -18 30 0 q-15 18 -30 0"/></svg>
+      </div>
+      <p class="intro__kicker reveal" data-reveal>With hearts full of joy</p>
+      <h2 class="intro__title reveal" data-reveal>
+        Two souls, one beautiful <span class="script">beginning</span>
+      </h2>
+      <p class="intro__body reveal" data-reveal>
+        Two families came together, a match was made, and somewhere between the first
+        conversation and countless since, we found our forever. Now we're tying the knot,
+        and we would be honoured to have you beside us — under the golden skies of Lucknow.
+      </p>
+    </section>
+
+    <!-- =========================================================
+         MEET THE COUPLE  ·  his & hers bio cards
+    ========================================================== -->
+    <section class="couple section" id="story">
+      <div class="couple__head">
+        <span class="section__tag reveal" data-reveal>Meet the Couple</span>
+        <h2 class="section__title reveal" data-reveal>The two of us, <span class="script">up close</span></h2>
+        <p class="couple__sub reveal" data-reveal>Two families said yes, and so did we. Here's a little about the pair you're flying in for.</p>
+      </div>
+
+      <div class="couple__grid">
+        <article class="couple-card reveal" data-reveal data-tilt data-cursor="card">
+          <div class="couple-card__photo"><img src="img/vaibhav-bio.jpg" alt="Vaibhav" loading="lazy" /></div>
+          <div class="couple-card__body">
+            <span class="couple-card__role">The Groom</span>
+            <h3 class="couple-card__name">Vaibhav</h3>
+            <p class="couple-card__tag script">Chai-fuelled optimist</p>
+            <ul class="couple-card__facts">
+              <li><b>Ask him about</b> cricket stats nobody requested</li>
+              <li><b>Superpower</b> finding the one dhaba worth the detour</li>
+              <li><b>Weakness</b> his mother's rajma, every single time</li>
+              <li><b>On the dance floor</b> more enthusiasm than rhythm</li>
+            </ul>
+          </div>
+        </article>
+
+        <div class="couple__amp" aria-hidden="true"><span class="script">&amp;</span></div>
+
+        <article class="couple-card reveal" data-reveal data-tilt data-cursor="card">
+          <div class="couple-card__photo"><img src="img/nishita-bio.jpg" alt="Nishita" loading="lazy" /></div>
+          <div class="couple-card__body">
+            <span class="couple-card__role">The Bride</span>
+            <h3 class="couple-card__name">Nishita</h3>
+            <p class="couple-card__tag script">Keeper of the plan</p>
+            <ul class="couple-card__facts">
+              <li><b>Ask her about</b> the 40-tab wedding spreadsheet</li>
+              <li><b>Superpower</b> packing for three days in one small bag</li>
+              <li><b>Weakness</b> a good playlist and an even better biryani</li>
+              <li><b>On the dance floor</b> the one you'll be trying to keep up with</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <p class="couple__foot reveal" data-reveal>
+        Two families, one very happy match — and the next chapter starts with you in the room.
+        <a href="#rsvp" class="couple__foot-link" data-cursor="link">Be there ✦</a>
+      </p>
+    </section>
+
+    <!-- =========================================================
+         COUNTDOWN
+    ========================================================== -->
+    <section class="countdown section" id="countdown" data-date="2026-12-10T19:00:00">
+      <div class="countdown__bg" data-parallax="0.15">
+        <img src="img/countdown-bg.jpg" alt="" />
+      </div>
+      <div class="countdown__inner">
+        <span class="section__tag section__tag--light reveal" data-reveal>The wait begins</span>
+        <h2 class="section__title section__title--light reveal" data-reveal>Counting every <span class="script">moment</span></h2>
+
+        <div class="countdown__grid" id="countdownGrid" role="timer" aria-live="polite">
+          <div class="count-cell"><span class="count-cell__num" data-unit="days">000</span><span class="count-cell__label">Days</span></div>
+          <div class="count-cell"><span class="count-cell__num" data-unit="hours">00</span><span class="count-cell__label">Hours</span></div>
+          <div class="count-cell"><span class="count-cell__num" data-unit="minutes">00</span><span class="count-cell__label">Minutes</span></div>
+          <div class="count-cell"><span class="count-cell__num" data-unit="seconds">00</span><span class="count-cell__label">Seconds</span></div>
+        </div>
+
+        <p class="countdown__note reveal" data-reveal>until we say "I do"</p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         EVENTS / SCHEDULE
+    ========================================================== -->
+    <section class="events section" id="events">
+      <div class="events__head">
+        <span class="section__tag reveal" data-reveal>The Celebrations</span>
+        <h2 class="section__title reveal" data-reveal>Three days of <span class="script">togetherness</span></h2>
+        <p class="events__sub reveal" data-reveal>Come as you are, leave as family. Here's everything we have planned.</p>
+      </div>
+
+      <div class="events__grid">
+        <article class="event-card reveal" data-reveal data-tilt data-cursor="card">
+          <div class="event-card__glow"></div>
+          <span class="event-card__no">01</span>
+          <span class="event-card__icon">✿</span>
+          <h3 class="event-card__title">Haldi &amp; Mehendi</h3>
+          <p class="event-card__when">Wednesday, Dec 9 · 10:00 AM</p>
+          <p class="event-card__where">The Elite Convention Hotel, Lucknow</p>
+          <p class="event-card__desc">Turmeric, henna, marigolds, and morning chai. A joyful start to the festivities.</p>
+          <span class="event-card__dress">Dress code · Fresh florals &amp; yellows</span>
+        </article>
+
+        <article class="event-card reveal" data-reveal data-tilt data-cursor="card">
+          <div class="event-card__glow"></div>
+          <span class="event-card__no">02</span>
+          <span class="event-card__icon">♪</span>
+          <h3 class="event-card__title">Sangeet</h3>
+          <p class="event-card__when">Wednesday, Dec 9 · 6:00 PM</p>
+          <p class="event-card__where">The Elite Convention Hotel, Lucknow</p>
+          <p class="event-card__desc">A night of music, dance-offs, and questionable choreography. Bring your energy.</p>
+          <span class="event-card__dress">Dress code · Indian glam</span>
+        </article>
+
+        <article class="event-card event-card--feature reveal" data-reveal data-tilt data-cursor="card">
+          <div class="event-card__glow"></div>
+          <span class="event-card__no">03</span>
+          <span class="event-card__icon">❦</span>
+          <h3 class="event-card__title">The Wedding</h3>
+          <p class="event-card__when">Thursday, Dec 10 · 7:00 PM</p>
+          <p class="event-card__where">Ornate Lucknow</p>
+          <p class="event-card__desc">The main event. Evening vows followed by the pheras under the stars.</p>
+          <span class="event-card__dress">Dress code · Traditional finery</span>
+        </article>
+
+        <article class="event-card reveal" data-reveal data-tilt data-cursor="card">
+          <div class="event-card__glow"></div>
+          <span class="event-card__no">04</span>
+          <span class="event-card__icon">✦</span>
+          <h3 class="event-card__title">Reception</h3>
+          <p class="event-card__when">Friday, Dec 11 · 8:00 PM</p>
+          <p class="event-card__where">The Elite Convention Hotel, Lucknow</p>
+          <p class="event-card__desc">Dinner, cocktails, and dancing till the lanterns fade. The perfect send-off.</p>
+          <span class="event-card__dress">Dress code · Cocktail elegance</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUOTE / DIVIDER
+    ========================================================== -->
+    <section class="quote section">
+      <div class="quote__mark" aria-hidden="true">“</div>
+      <blockquote class="quote__text reveal" data-reveal>
+        In all the world, there is no heart for me like yours.
+      </blockquote>
+      <cite class="quote__cite reveal" data-reveal>— Maya Angelou</cite>
+    </section>
+
+    <!-- =========================================================
+         GALLERY  ·  masonry + lightbox
+    ========================================================== -->
+    <section class="gallery section" id="gallery">
+      <div class="gallery__head">
+        <span class="section__tag reveal" data-reveal>Moments</span>
+        <h2 class="section__title reveal" data-reveal>A few of our <span class="script">favourites</span></h2>
+      </div>
+
+      <div class="gallery__grid" id="galleryGrid">
+        <!-- data-full points to a bigger version for the lightbox -->
+        <figure class="gallery__item" data-cursor="view"><img src="img/gallery-3.jpg" data-full="img/gallery-3.jpg" alt="Vaibhav and Nishita during their engagement" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/vault-6.jpg" data-full="img/vault-6.jpg" alt="Vaibhav and Nishita together" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/vault-1.jpg" data-full="img/vault-1.jpg" alt="Vaibhav and Nishita together" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/vaibhav.jpg" data-full="img/vaibhav.jpg" alt="Vaibhav and Nishita during their engagement" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/vault-3.jpg" data-full="img/vault-3.jpg" alt="Vaibhav and Nishita during their engagement" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/vault-5.jpg" data-full="img/vault-5.jpg" alt="Vaibhav and Nishita during their engagement" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/gallery-6.jpg" data-full="img/gallery-6.jpg" alt="Vaibhav and Nishita together" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/gallery-2.jpg" data-full="img/gallery-2.jpg" alt="Vaibhav and Nishita during their engagement" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/gallery-7.jpg" data-full="img/gallery-7.jpg" alt="Vaibhav and Nishita together" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/nishita.jpg" data-full="img/nishita.jpg" alt="Vaibhav and Nishita during their engagement" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/gallery-4.jpg" data-full="img/gallery-4.jpg" alt="Vaibhav and Nishita during their engagement" loading="lazy" /><span class="gallery__view">View</span></figure>
+        <figure class="gallery__item" data-cursor="view"><img src="img/gallery-5.jpg" data-full="img/gallery-5.jpg" alt="Vaibhav and Nishita together" loading="lazy" /><span class="gallery__view">View</span></figure>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Photo viewer">
+      <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+      <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
+      <figure class="lightbox__stage">
+        <img id="lightboxImg" src="" alt="" />
+        <figcaption id="lightboxCaption"></figcaption>
+      </figure>
+      <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next">&#8250;</button>
+    </div>
+
+    <!-- =========================================================
+         FORTUNE TELLER  (crystal ball · injected feature)
+    ========================================================== -->
+    <section class="fortune section" id="fortune">
+      <div class="fortune__head">
+        <span class="section__tag">A Little Magic</span>
+        <h2 class="section__title">Consult the <span class="script">oracle</span></h2>
+        <p class="fortune__intro">Before you RSVP, let the crystal ball tell you exactly how your night in Lucknow is going to go.</p>
+      </div>
+
+      <div class="fortune__panel">
+        <!-- Crystal ball stage -->
+        <div class="fortune__stage">
+          <div class="fortune__orb-wrap" id="fortuneOrbWrap">
+            <div class="fortune__orb-halo" aria-hidden="true"></div>
+            <div class="fortune__orb" aria-hidden="true">
+              <div class="fortune__orb-mist"></div>
+              <div class="fortune__orb-highlight"></div>
+            </div>
+            <span class="fortune__spark fortune__spark--1" aria-hidden="true"></span>
+            <span class="fortune__spark fortune__spark--2" aria-hidden="true"></span>
+            <span class="fortune__spark fortune__spark--3" aria-hidden="true"></span>
+            <span class="fortune__spark fortune__spark--4" aria-hidden="true"></span>
+            <span class="fortune__spark fortune__spark--5" aria-hidden="true"></span>
+            <div class="fortune__orb-shadow" aria-hidden="true"></div>
+            <div class="fortune__orb-stand" aria-hidden="true"></div>
+            <div class="fortune__orb-base" aria-hidden="true"></div>
+          </div>
+          <p class="fortune__stage-caption script">Ask, and it shall answer</p>
+        </div>
+
+        <!-- Form + result -->
+        <div class="fortune__box" id="fortuneBox">
+          <form class="fortune__form" id="fortuneForm" novalidate>
+            <div class="fortune__field">
+              <input type="text" id="fortuneName" name="fortuneName" placeholder=" " autocomplete="off" />
+              <label for="fortuneName">Your name</label>
+              <span class="fortune__hint">Tell the crystal your name first — it's shy otherwise.</span>
+            </div>
+
+            <div class="fortune__field fortune__field--choice">
+              <span class="fortune__legend">Which side are you on?</span>
+              <div class="fortune__choice">
+                <label class="fortune__opt">
+                  <input type="radio" name="side" value="bride" />
+                  <span>Bride's Side</span>
+                </label>
+                <label class="fortune__opt">
+                  <input type="radio" name="side" value="groom" />
+                  <span>Groom's Side</span>
+                </label>
+                <label class="fortune__opt">
+                  <input type="radio" name="side" value="friend" checked />
+                  <span>Friend</span>
+                </label>
+                <label class="fortune__opt">
+                  <input type="radio" name="side" value="family" />
+                  <span>Family</span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn--fill"><span>Reveal my fortune</span></button>
+            <p class="fortune__note">Same name + side always gets the same fortune — so feel free to compare notes with a friend.</p>
+          </form>
+
+          <div class="fortune__result" id="fortuneResult" aria-live="polite">
+            <div class="fortune__card" id="fortuneCard">
+              <p class="fortune__card-header" id="fortuneCardHeader"></p>
+              <div id="fortuneCardBody"></div>
+
+              <div class="fortune__actions">
+                <button type="button" class="btn btn--outline" id="fortuneResetBtn"><span>Reveal another</span></button>
+                <button type="button" class="btn btn--outline" id="fortuneCopyBtn"><span>Copy</span></button>
+                <span class="fortune__copied" id="fortuneCopiedMsg" role="status">Copied!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         COUPLE QUIZ  (how well do you know us · injected feature)
+    ========================================================== -->
+    <section class="quiz section" id="quiz">
+      <div class="quiz__head">
+        <span class="section__tag">The Fun Bit</span>
+        <h2 class="section__title">How well do you know <span class="script">us?</span></h2>
+        <p class="quiz__sub">Ten questions. Bragging rights on the line.</p>
+      </div>
+
+      <div class="quiz__stage">
+        <div class="quiz__card">
+          <div id="quizStage">
+            <noscript><p class="quiz__noscript">Enable JavaScript to play the quiz.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SAVE-THE-DATE POSTCARD STUDIO  ·  live canvas keepsake
+    ========================================================== -->
+    <section class="postcard section" id="postcard">
+      <div class="postcard__head">
+        <span class="section__tag reveal" data-reveal>A Keepsake</span>
+        <h2 class="section__title reveal" data-reveal>Design your own <span class="script">postcard</span></h2>
+        <p class="postcard__intro reveal" data-reveal>Greetings from Lucknow — write a note, pick your colours and a little stamp, then download a golden-hour postcard to keep or share.</p>
+      </div>
+
+      <div class="postcard__stage">
+        <!-- Live preview -->
+        <div class="postcard__preview">
+          <div class="postcard__canvas-wrap">
+            <canvas class="postcard__canvas" id="postcardCanvas" role="img"
+                    aria-label="A save-the-date postcard reading Greetings from Lucknow, dated the 10th of December 2026."></canvas>
+            <p class="postcard__canvas-fallback">
+              Your browser can’t draw the live postcard, but the celebration is still on:
+              Vaibhav &amp; Nishita, 10 · 12 · 2026, Lucknow.
+            </p>
+          </div>
+          <div class="postcard__counter">
+            <span id="postcardMeta">Golden Hour · Palace</span>
+            <span class="postcard__hint">High-resolution PNG</span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="postcard__panel">
+          <div class="postcard__field">
+            <label class="postcard__label" for="postcardGreeting">Your greeting</label>
+            <textarea id="postcardGreeting" maxlength="90" rows="2"
+                      data-cursor="text"
+                      placeholder="Wish you were here for every golden moment."></textarea>
+            <div class="postcard__field-foot" id="postcardGreetingFoot" aria-live="polite">0 / 90 characters</div>
+          </div>
+
+          <div class="postcard__field">
+            <label class="postcard__label" for="postcardName">Signed</label>
+            <input type="text" id="postcardName" maxlength="40" data-cursor="text"
+                   autocomplete="name" placeholder="your name" />
+          </div>
+
+          <div class="postcard__field">
+            <span class="postcard__label" id="postcardPaletteLabel">Colour palette</span>
+            <div class="postcard__swatches" id="postcardSwatches" role="radiogroup"
+                 aria-labelledby="postcardPaletteLabel"></div>
+          </div>
+
+          <div class="postcard__field">
+            <span class="postcard__label" id="postcardMotifLabel">Stamp motif</span>
+            <div class="postcard__chips" id="postcardChips" role="radiogroup"
+                 aria-labelledby="postcardMotifLabel"></div>
+          </div>
+
+          <div class="postcard__field">
+            <label class="postcard__toggle">
+              <input type="checkbox" id="postcardSparkle" />
+              <span class="postcard__toggle-track" aria-hidden="true"></span>
+              <span class="postcard__toggle-label">Add gold-foil sparkle</span>
+            </label>
+          </div>
+
+          <div class="postcard__actions">
+            <button type="button" class="btn btn--fill" id="postcardDownload" data-cursor="link"><span>Download postcard</span></button>
+            <button type="button" class="btn btn--outline" id="postcardSurprise" data-cursor="link"><span>Surprise me</span></button>
+          </div>
+          <p class="postcard__hint">Tip: “Surprise me” shuffles the greeting, palette and stamp for you.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         TRAVEL & STAY  +  FAQ accordion
+    ========================================================== -->
+    <!-- =========================================================
+         THE FIRST-DANCE MIXTAPE  ·  collaborative song-request wall
+    ========================================================== -->
+    <section class="mixtape section" id="mixtape">
+      <div class="mixtape__head">
+        <span class="section__tag reveal" data-reveal>Set the Mood</span>
+        <h2 class="section__title reveal" data-reveal>Build our first-dance <span class="script">mixtape</span></h2>
+        <p class="mixtape__sub reveal" data-reveal>Drop the songs you want to hear at the sangeet and reception. Love a pick someone else made? Give it a +1 and watch the record climb the setlist.</p>
+      </div>
+
+      <div class="mixtape__body">
+        <!-- Turntable centerpiece -->
+        <div class="mixtape__deck reveal" id="mixtapeDeck" data-reveal>
+          <div class="mixtape__platter">
+            <div class="mixtape__plinth" aria-hidden="true"></div>
+            <div class="mixtape__record" id="mixtapeRecord" aria-hidden="true">
+              <span class="mixtape__label">
+                <span class="mixtape__label-text"><b>V &amp; N</b>10.12.26</span>
+              </span>
+              <span class="mixtape__spindle"></span>
+            </div>
+            <div class="mixtape__tonearm" aria-hidden="true"></div>
+            <span class="mixtape__pivot" aria-hidden="true"></span>
+          </div>
+          <span class="mixtape__deck-caption" id="mixtapeDeckCaption" data-state="paused" aria-hidden="true">Paused</span>
+        </div>
+
+        <!-- Request form + tracklist -->
+        <div class="mixtape__wall">
+          <div class="mixtape__panel">
+            <h3 class="mixtape__panel-title">Add a <span class="script">song</span></h3>
+            <form class="mixtape__form" id="mixtapeForm" novalidate>
+              <div class="mixtape__field">
+                <label for="mixtapeSong">Song title</label>
+                <input type="text" id="mixtapeSong" name="song" maxlength="90" autocomplete="off" data-cursor="text" placeholder="Perfect" />
+                <span class="mixtape__hint" id="mixtapeSongHint">Pop a song title in first ✦</span>
+              </div>
+              <div class="mixtape__field">
+                <label for="mixtapeArtist">Artist <span aria-hidden="true">(optional)</span></label>
+                <input type="text" id="mixtapeArtist" name="artist" maxlength="90" autocomplete="off" data-cursor="text" placeholder="Ed Sheeran" />
+              </div>
+              <div class="mixtape__field mixtape__field--name">
+                <label for="mixtapeName">Your name <span aria-hidden="true">(optional)</span></label>
+                <input type="text" id="mixtapeName" name="name" maxlength="40" autocomplete="off" data-cursor="text" placeholder="So we know who to thank" />
+              </div>
+              <div class="mixtape__form-actions">
+                <button type="submit" class="btn btn--fill" data-cursor="link"><span>Add to the mixtape</span></button>
+              </div>
+            </form>
+          </div>
+
+          <div class="mixtape__toolbar">
+            <p class="mixtape__count" id="mixtapeCount" aria-live="polite" role="status">Loading the setlist…</p>
+            <div class="mixtape__sort">
+              <label for="mixtapeSort">Sort</label>
+              <select id="mixtapeSort" data-cursor="link">
+                <option value="newest">Newest</option>
+                <option value="loved">Most loved</option>
+              </select>
+            </div>
+          </div>
+
+          <ol class="mixtape__list" id="mixtapeList" aria-label="Requested songs"></ol>
+          <p class="mixtape__empty" id="mixtapeEmpty" hidden>No songs yet — be the first to add one.</p>
+          <noscript><p class="mixtape__empty">Enable JavaScript to add and like songs.</p></noscript>
+        </div>
+      </div>
+    </section>
+
+    <section class="wishes section" id="wishes">
+      <div class="wishes__head">
+        <span class="section__tag section__tag--light reveal" data-reveal>The Wishing Sky</span>
+        <h2 class="section__title section__title--light reveal" data-reveal>Release a <span class="script">lantern</span></h2>
+        <p class="wishes__intro reveal" data-reveal>Under the Lucknow sky, we send glowing kandeel aloft. Write a blessing for Vaibhav &amp; Nishita, sign your name, and watch it drift up to join the sky.</p>
+      </div>
+
+      <div class="wishes__sky" id="wishesSky" aria-label="A sky of released wishes — tap any lantern to read it"></div>
+
+      <form class="wishes__form" id="wishesForm" novalidate>
+        <div class="wishes__field">
+          <label class="wishes__label" for="wishesText">Your wish</label>
+          <textarea class="wishes__textarea" id="wishesText" name="wishesText" rows="3"
+            placeholder="May your love glow as warm as these lanterns…" data-cursor="text"></textarea>
+          <span class="wishes__counter" id="wishesCounter" aria-hidden="true">0 / 140</span>
+        </div>
+        <div class="wishes__field">
+          <label class="wishes__label" for="wishesName">Your name <span style="text-transform:none;letter-spacing:0;opacity:.7">(optional)</span></label>
+          <input class="wishes__input" type="text" id="wishesName" name="wishesName"
+            placeholder="A friend of the couple" autocomplete="name" data-cursor="text" />
+        </div>
+        <button class="btn btn--fill" type="submit" data-cursor="link"><span>Release your lantern</span></button>
+        <span class="wishes__count" id="wishesCount" role="status" aria-live="polite"></span>
+      </form>
+    </section>
+
+    <section class="travel section" id="travel">
+      <div class="travel__head">
+        <span class="section__tag reveal" data-reveal>Travel &amp; Stay</span>
+        <h2 class="section__title reveal" data-reveal>Everything you'll <span class="script">need</span></h2>
+      </div>
+
+      <div class="travel__cards">
+        <div class="travel-info reveal" data-reveal>
+          <span class="travel-info__icon">✈</span>
+          <h3>Getting There</h3>
+          <p>Fly into <b>Chaudhary Charan Singh Airport (LKO)</b>, a short drive from the venues. We'll arrange shuttles from partner hotels.</p>
+        </div>
+        <div class="travel-info reveal" data-reveal>
+          <span class="travel-info__icon">⌂</span>
+          <h3>Where to Stay</h3>
+          <p>We've reserved room blocks at <b>The Elite Convention Hotel</b> and <b>Ornate Lucknow</b>. Use code <b>VN2026</b> for our group rate.</p>
+        </div>
+        <div class="travel-info reveal" data-reveal>
+          <span class="travel-info__icon">☼</span>
+          <h3>Weather</h3>
+          <p>December in Lucknow is lovely — mild days around 23°C and crisp evenings near 9°C. Pack a warm layer for the evenings.</p>
+        </div>
+      </div>
+
+      <div class="faq">
+        <h3 class="faq__title reveal" data-reveal>Good to know</h3>
+        <div class="faq__list" id="faqList">
+          <div class="faq__item">
+            <button class="faq__q" aria-expanded="false" data-cursor="link">Will there be enough food?<span class="faq__plus"></span></button>
+            <div class="faq__a"><p>Will there be <em>enough food?</em> Friend, you will roll home. Chaat, live counters, three kinds of biryani, and a dessert table longer than the guest list. Come hungry, leave a different shape.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" aria-expanded="false" data-cursor="link">What do I wear?<span class="faq__plus"></span></button>
+            <div class="faq__a"><p>Colour, sparkle, and comfortable shoes you can dance in. Each event has a dress code above. Golden rule: it is physically impossible to be overdressed at an Indian wedding, so go for it.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" aria-expanded="false" data-cursor="link">What gift should I bring?<span class="faq__plus"></span></button>
+            <div class="faq__a"><p>Just bring yourself, your best dance moves, and maybe an empty stomach. No registry, no fuss. If your heart insists, your blessings (and a great song request for the mixtape) are more than enough.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" aria-expanded="false" data-cursor="link">Someone's going to ask when I'm getting married, aren't they?<span class="faq__plus"></span></button>
+            <div class="faq__a"><p>At least four relatives. It's tradition. Smile, take the ladoo, say "soon, aunty," and make a graceful exit toward the dance floor. You've got this.</p></div>
+          </div>
+          <div class="faq__item">
+            <button class="faq__q" aria-expanded="false" data-cursor="link">How late does this go?<span class="faq__plus"></span></button>
+            <div class="faq__a"><p>Yes. 😄 Indian weddings run on their own timezone — pace yourself, hydrate, and know that the real party starts around the time you think it's ending.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         RSVP
+    ========================================================== -->
+    <section class="rsvp section" id="rsvp">
+      <div class="rsvp__panel">
+        <div class="rsvp__aside">
+          <span class="section__tag section__tag--light reveal" data-reveal>RSVP</span>
+          <h2 class="section__title section__title--light reveal" data-reveal>Will you <span class="script">join</span> us?</h2>
+          <p class="rsvp__deadline reveal" data-reveal>Kindly respond by <b>October 1st, 2026</b>.</p>
+          <div class="rsvp__seal" aria-hidden="true">
+            <span class="rsvp__seal-mono">V<em>&amp;</em>N</span>
+          </div>
+        </div>
+
+        <form class="rsvp__form" id="rsvpForm" novalidate>
+          <div class="field">
+            <input type="text" id="guestName" name="name" required placeholder=" " data-cursor="text" />
+            <label for="guestName">Full name</label>
+            <span class="field__error" data-error></span>
+          </div>
+
+          <div class="field">
+            <input type="email" id="guestEmail" name="email" required placeholder=" " data-cursor="text" />
+            <label for="guestEmail">Email address</label>
+            <span class="field__error" data-error></span>
+          </div>
+
+          <div class="field field--choice">
+            <span class="field__legend">Will you be attending?</span>
+            <div class="choice">
+              <label class="choice__opt" data-cursor="link">
+                <input type="radio" name="attending" value="yes" required />
+                <span>Joyfully accepts</span>
+              </label>
+              <label class="choice__opt" data-cursor="link">
+                <input type="radio" name="attending" value="no" />
+                <span>Regretfully declines</span>
+              </label>
+            </div>
+            <span class="field__error" data-error></span>
+          </div>
+
+          <div class="field rsvp__conditional" id="guestCountField">
+            <select id="guestCount" name="guests" data-cursor="link">
+              <option value="1">Just me</option>
+              <option value="2">Two of us</option>
+              <option value="3">Three</option>
+              <option value="4">Four</option>
+            </select>
+            <label for="guestCount" class="field__label-static">Number of guests</label>
+          </div>
+
+          <div class="field rsvp__conditional" id="mealField">
+            <select id="meal" name="meal" data-cursor="link">
+              <option value="" disabled selected>Select a preference</option>
+              <option value="veg">Vegetarian</option>
+              <option value="nonveg">Non-vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="jain">Jain</option>
+            </select>
+            <label for="meal" class="field__label-static">Meal preference</label>
+          </div>
+
+          <div class="field">
+            <textarea id="message" name="message" rows="3" placeholder=" " data-cursor="text"></textarea>
+            <label for="message">A note for us (optional)</label>
+          </div>
+
+          <button type="submit" class="btn btn--fill" data-cursor="link"><span>Send my RSVP</span></button>
+        </form>
+
+        <!-- Success state -->
+        <div class="rsvp__success" id="rsvpSuccess" aria-hidden="true">
+          <div class="rsvp__success-ring">
+            <svg viewBox="0 0 80 80"><path class="rsvp__check" d="M22 42 L35 55 L60 27" fill="none"/></svg>
+          </div>
+          <h3>Thank you, <span id="successName">friend</span>!</h3>
+          <p id="successMsg">Your RSVP is in. We can't wait to celebrate with you.</p>
+          <button class="btn btn--outline" id="rsvpReset" data-cursor="link"><span>Edit response</span></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+  <footer class="footer" id="footer">
+    <div class="footer__ornament" aria-hidden="true">
+      <svg viewBox="0 0 200 40"><path d="M0 20 H70 M130 20 H200"/><circle cx="100" cy="20" r="6"/><path d="M85 20 q15 -18 30 0 q-15 18 -30 0"/></svg>
+    </div>
+    <a href="#home" class="footer__mono script" data-cursor="link">Vaibhav &amp; Nishita</a>
+    <p class="footer__date">10 · 12 · 2026 — Lucknow, India</p>
+    <p class="footer__thanks">Made with love, and a little bit of magic.</p>
+    <p class="footer__credit">© 2026 · Vaibhav &amp; Nishita</p>
+  </footer>
+
+  <!-- =========================================================
+       MOBILE BOTTOM NAV  (unique mobile element)
+  ========================================================== -->
+  <nav class="tabbar" id="tabbar" aria-label="Mobile navigation">
+    <a href="#home" class="tabbar__item is-active" data-tab>
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="#story" class="tabbar__item" data-tab>
+      <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+      <span>Couple</span>
+    </a>
+    <a href="#events" class="tabbar__item" data-tab>
+      <svg viewBox="0 0 24 24"><path d="M7 3v3M17 3v3M4 8h16M5 6h14v14H5z"/></svg>
+      <span>Events</span>
+    </a>
+    <a href="#gallery" class="tabbar__item" data-tab>
+      <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 11l2.5 3L14 9l4 6"/><circle cx="8" cy="8.5" r="1.2"/></svg>
+      <span>Photos</span>
+    </a>
+    <a href="#rsvp" class="tabbar__item tabbar__item--cta" data-tab>
+      <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+      <span>RSVP</span>
+    </a>
+  </nav>
+
+  <!-- =========================================================
+       EASTER-EGG LAYER  (hidden delights)
+  ========================================================== -->
+
+  <!-- Floating "magic" dock — the delights hidden behind typed codes, made
+       obvious for everyone. Toggling the star fans out the three actions. -->
+  <div class="fun-dock" id="funDock">
+    <div class="fun-dock__menu" id="funDockMenu" role="menu" aria-label="A little bit of magic">
+      <button type="button" class="fun-dock__item" id="funMiso" role="menuitem" data-cursor="link">
+        <span class="fun-dock__emoji" aria-hidden="true">🐾</span>
+        <span class="fun-dock__text">Summon Miso</span>
+      </button>
+      <button type="button" class="fun-dock__item" id="funForever" role="menuitem" data-cursor="link">
+        <span class="fun-dock__emoji" aria-hidden="true">♥</span>
+        <span class="fun-dock__text">Petal shower</span>
+      </button>
+      <button type="button" class="fun-dock__item" id="funVault" role="menuitem" data-cursor="link">
+        <span class="fun-dock__emoji" aria-hidden="true">🔒</span>
+        <span class="fun-dock__text">Open the vault</span>
+      </button>
+    </div>
+    <button type="button" class="fun-dock__toggle" id="funDockToggle"
+            aria-expanded="false" aria-controls="funDockMenu"
+            aria-label="A little bit of magic" data-cursor="link">
+      <span class="fun-dock__toggle-icon" aria-hidden="true">✦</span>
+      <span class="fun-dock__toggle-label">Magic</span>
+    </button>
+  </div>
+
+  <!-- Floating wedding ring — click for a secret note -->
+  <button class="ring-egg" id="ringEgg" aria-label="A little secret">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <circle class="ring-band" cx="20" cy="24" r="11"/>
+      <path class="ring-gem" d="M20 4 L26 11 L20 16 L14 11 Z"/>
+      <circle class="ring-spark" cx="20" cy="10" r="1.6"/>
+    </svg>
+    <span class="ring-egg__badge">0</span>
+  </button>
+
+  <!-- MISO the cat cameo (type MISO) -->
+  <svg class="miso" id="miso" viewBox="0 0 120 70" aria-hidden="true">
+    <g fill="#3a3230">
+      <path class="miso__leg" d="M40 44 h6 v20 h-6 z"/>
+      <path class="miso__leg miso__leg--b" d="M64 44 h6 v20 h-6 z"/>
+      <path d="M30 44 h6 v20 h-6 z"/>
+      <path d="M74 44 h6 v20 h-6 z"/>
+      <path class="miso__tail" d="M82 44 q26 -6 20 -30 q-2 -6 -6 -2 q4 12 -8 22 z"/>
+      <ellipse cx="55" cy="42" rx="34" ry="18"/>
+      <circle cx="26" cy="30" r="15"/>
+      <path d="M14 20 l-3 -12 l11 6 z"/>
+      <path d="M38 20 l3 -12 l-11 6 z"/>
+    </g>
+    <circle cx="21" cy="29" r="2" fill="#e6cf9c"/>
+    <circle cx="31" cy="29" r="2" fill="#e6cf9c"/>
+    <path d="M23 34 q3 3 6 0" stroke="#e6cf9c" stroke-width="1.4" fill="none"/>
+  </svg>
+
+  <!-- Shared ornate secret modal -->
+  <div class="egg-modal" id="eggModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="A secret">
+    <div class="egg-modal__scrim"></div>
+    <div class="egg-modal__box"></div>
+  </div>
+
+  <!-- ===== Scripts ===== -->
+  <!-- loader.js first: it sets window.WED.loader so main.js defers the intro -->
+  <script src="js/loader.js" defer></script>
+  <script src="js/easter.js" defer></script>
+  <script src="js/petals.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/fortune.js" defer></script>
+  <script src="js/quiz.js" defer></script>
+  <script src="js/postcard.js" defer></script>
+  <script src="js/mixtape.js" defer></script>
+  <script src="js/wishes.js" defer></script>
+</body>
+</html>

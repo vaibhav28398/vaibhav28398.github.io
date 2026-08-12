@@ -1,0 +1,329 @@
+/* =============================================================
+   postcard.css · "Save-the-Date Postcard Studio"
+   A live canvas keepsake generator — guests type a greeting,
+   pick a palette + a stamp motif, and watch a procedurally
+   drawn Lucknow postcard update in real time before downloading
+   a PNG. Namespaced under .postcard__ so it drops into the
+   cascade cleanly. Only the :root tokens from style.css are used;
+   the JS derives a couple of tints/shades from those hex values
+   for the palette presets, nothing new is invented here.
+   ============================================================= */
+
+.postcard {
+  background: linear-gradient(180deg, var(--cream), var(--cream-2));
+}
+
+.postcard__head {
+  max-width: 720px;
+  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+  text-align: center;
+}
+
+.postcard__intro {
+  margin-top: 1.1rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+/* ---------- Layout: preview + controls side by side ---------- */
+.postcard__stage {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+/* ---------- Preview column ---------- */
+.postcard__preview {
+  position: sticky;
+  top: calc(var(--header-h) + 1.5rem);
+}
+
+.postcard__canvas-wrap {
+  position: relative;
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  background: var(--charcoal);
+  padding: 0;
+  overflow: hidden;
+  /* classic postcard ratio, roughly 3:2 landscape */
+  aspect-ratio: 3 / 2;
+}
+
+.postcard__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.postcard__canvas-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  font-style: italic;
+  color: var(--cream);
+  background: linear-gradient(165deg, #38302a, var(--charcoal));
+}
+.postcard--no-canvas .postcard__canvas { display: none; }
+.postcard--no-canvas .postcard__canvas-fallback { display: flex; }
+
+.postcard__counter {
+  margin-top: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.postcard__counter strong { color: var(--gold-deep); font-weight: 500; }
+
+/* ---------- Controls column ---------- */
+.postcard__panel {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: clamp(1.8rem, 4vw, 2.5rem);
+  box-shadow: var(--shadow-sm);
+}
+
+.postcard__field {
+  margin-bottom: 1.5rem;
+}
+.postcard__field:last-child { margin-bottom: 0; }
+
+.postcard__label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.6rem;
+}
+
+.postcard__field textarea,
+.postcard__field input[type="text"] {
+  width: 100%;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--cream-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  resize: vertical;
+  transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
+}
+.postcard__field textarea {
+  min-height: 4.4rem;
+  line-height: 1.5;
+}
+.postcard__field textarea:focus,
+.postcard__field input[type="text"]:focus {
+  outline: none;
+  border-color: var(--gold-deep);
+  background: var(--cream);
+}
+
+.postcard__field-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+.postcard__field-foot.is-near-limit { color: var(--terracotta); }
+
+/* ---------- Palette swatches ---------- */
+.postcard__swatches {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+}
+
+.postcard__swatch {
+  position: relative;
+}
+.postcard__swatch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.postcard__swatch span {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.postcard__swatch-dot {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  border: 1px solid rgba(43, 38, 34, 0.2);
+}
+.postcard__swatch:hover span { border-color: var(--gold); }
+.postcard__swatch input:checked + span {
+  border-color: var(--gold-deep);
+  background: var(--cream-2);
+  box-shadow: 0 0 0 1px var(--gold-deep) inset;
+}
+.postcard__swatch input:focus-visible + span {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+
+/* ---------- Motif chips ---------- */
+.postcard__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.postcard__chip { position: relative; }
+.postcard__chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.postcard__chip span {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out);
+}
+.postcard__chip:hover span { border-color: var(--gold); color: var(--ink); }
+.postcard__chip input:checked + span {
+  background: var(--gold-deep);
+  border-color: var(--gold-deep);
+  color: var(--cream);
+}
+.postcard__chip input:focus-visible + span {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+
+/* ---------- Toggle ---------- */
+.postcard__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+}
+.postcard__toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.postcard__toggle-track {
+  flex: 0 0 auto;
+  position: relative;
+  width: 2.6rem;
+  height: 1.5rem;
+  border-radius: 100px;
+  background: var(--line);
+  transition: background 0.3s var(--ease-out);
+}
+.postcard__toggle-track::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease-out);
+}
+.postcard__toggle input:checked ~ .postcard__toggle-track {
+  background: var(--gold-deep);
+}
+.postcard__toggle input:checked ~ .postcard__toggle-track::before {
+  transform: translateX(1.1rem);
+}
+.postcard__toggle input:focus-visible ~ .postcard__toggle-track {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+.postcard__toggle-label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+/* ---------- Actions ---------- */
+.postcard__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.9rem;
+}
+.postcard__actions .btn { flex: 1 1 auto; justify-content: center; }
+
+.postcard__hint {
+  margin-top: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.postcard__noscript {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .postcard__stage { grid-template-columns: 1fr; }
+  .postcard__preview { position: static; }
+}
+
+@media (max-width: 480px) {
+  .postcard__panel { padding: 1.5rem 1.2rem; border-radius: 14px; }
+  .postcard__swatches { grid-template-columns: 1fr; }
+  .postcard__actions { flex-direction: column; }
+  .postcard__actions .btn { width: 100%; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .postcard__swatch span,
+  .postcard__chip span,
+  .postcard__toggle-track,
+  .postcard__toggle-track::before,
+  .postcard__field textarea,
+  .postcard__field input[type="text"] {
+    transition: none !important;
+  }
+}

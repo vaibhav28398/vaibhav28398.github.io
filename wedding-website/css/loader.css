@@ -1,0 +1,229 @@
+/* =============================================================
+   loader.css · "The Unveiling"
+   Velvet stage curtains + a scratch-to-reveal Save-the-Date card.
+   Sits above everything (z 1000) until the guest scratches (or
+   skips), then the curtains part to reveal the site.
+   ============================================================= */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  background: var(--charcoal);           /* seam colour behind the card */
+}
+.loader.is-done { opacity: 0; pointer-events: none; transition: opacity 0.6s var(--ease-out); }
+
+/* ---------- Velvet curtains ---------- */
+.loader__curtain {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 52%;                             /* slight overlap in the middle */
+  z-index: 2;
+  will-change: transform;
+  transition: transform 1.4s var(--ease-inout);
+  /* deep wine velvet with vertical folds */
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0) 12%, rgba(0,0,0,0) 88%, rgba(0,0,0,0.5)),
+    repeating-linear-gradient(90deg,
+      #3c141d 0px, #5a2230 26px, #6e2b3a 40px, #4a1a25 54px, #3c141d 74px),
+    linear-gradient(180deg, #2a0e15, #4a1a25 40%, #33121a);
+  box-shadow: inset 0 -60px 80px -30px rgba(0,0,0,0.6), inset 0 40px 60px -30px rgba(0,0,0,0.5);
+}
+.loader__curtain--l { left: 0;  border-right: 2px solid rgba(230,207,156,0.4); }
+.loader__curtain--r { right: 0; border-left:  2px solid rgba(230,207,156,0.4); }
+
+/* soft sheen highlight running down each curtain */
+.loader__curtain::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, rgba(255,220,170,0.10), transparent);
+  mix-blend-mode: screen;
+}
+.loader__curtain--l::before { right: 0; }
+.loader__curtain--r::before { left: 0; transform: scaleX(-1); }
+
+/* gold scalloped valance across the top */
+.loader__valance {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: clamp(34px, 6vh, 66px);
+  z-index: 4;
+  background:
+    radial-gradient(circle at 30px bottom, var(--gold) 0 14px, transparent 15px) 0 100% / 60px 100% repeat-x,
+    linear-gradient(180deg, #7a5a1e, var(--gold-deep));
+  box-shadow: 0 6px 18px -6px rgba(0,0,0,0.6);
+}
+.loader__valance::after {                 /* little hanging beads */
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 8px;
+  background: radial-gradient(circle at 30px top, var(--gold-light) 0 4px, transparent 5px) 0 0 / 60px 8px repeat-x;
+}
+
+/* tassel tie-backs, one per curtain */
+.loader__tie {
+  position: absolute;
+  top: 46%;
+  width: 42px; height: 42px;
+  border: 3px solid var(--gold);
+  border-radius: 50%;
+  z-index: 3;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.2), 0 8px 20px -6px rgba(0,0,0,0.5);
+}
+.loader__tie::after {                      /* dangling cord */
+  content: "";
+  position: absolute;
+  left: 50%; top: 100%;
+  width: 5px; height: 46px;
+  transform: translateX(-50%);
+  background: linear-gradient(var(--gold), var(--gold-deep));
+  border-radius: 3px;
+}
+.loader__curtain--l .loader__tie { right: 22px; }
+.loader__curtain--r .loader__tie { left: 22px; }
+
+/* ---------- Center stage: the scratch card ---------- */
+.loader__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+.loader__eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.9;
+}
+
+.loader__card {
+  position: relative;
+  width: min(84vw, 360px);
+  aspect-ratio: 3 / 2;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 30px 70px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(230,207,156,0.5), inset 0 0 0 6px rgba(255,255,255,0.4);
+}
+/* the prize underneath the foil */
+.loader__card-under {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #fff, var(--cream) 60%),
+    var(--cream);
+}
+.loader__card-under::before {              /* thin inner frame */
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  opacity: 0.6;
+}
+.loader__save   { font-family: var(--font-sans); font-size: 0.62rem; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gold-deep); }
+.loader__date   { font-family: var(--font-serif); font-weight: 600; font-size: clamp(2rem, 9vw, 2.9rem); letter-spacing: 0.02em; color: var(--ink); line-height: 1.05; }
+.loader__place  { font-family: var(--font-script); font-size: 1.5rem; color: var(--gold-deep); }
+
+/* the scratch layer */
+.loader__scratch {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: grab;
+  touch-action: none;                      /* we handle the gesture ourselves */
+  transition: opacity 0.6s var(--ease-out);
+}
+.loader__scratch:active { cursor: grabbing; }
+.loader.is-scratched .loader__scratch { opacity: 0; pointer-events: none; }
+
+.loader__hint {
+  position: absolute;
+  left: 0; right: 0; bottom: 14px;
+  z-index: 3;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  pointer-events: none;
+  transition: opacity 0.4s;
+  animation: loaderHintPulse 1.8s var(--ease-inout) infinite;
+}
+.loader.is-touched .loader__hint { opacity: 0; }
+@keyframes loaderHintPulse { 0%,100% { opacity: 0.85; } 50% { opacity: 0.35; } }
+
+/* Enter + skip controls */
+.loader__enter {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  background: var(--gold-light);
+  padding: 0.95rem 2.2rem;
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 12px 30px -10px rgba(230,207,156,0.6);
+}
+.loader__enter span { transition: transform 0.4s var(--ease-out); }
+.loader__enter:hover { background: var(--cream); box-shadow: 0 16px 36px -8px rgba(230,207,156,0.7); }
+.loader__enter:hover span { transform: translateX(5px); }
+.loader.is-scratched .loader__enter { opacity: 1; transform: translateY(0); pointer-events: auto; animation: loaderEnterBob 2.4s var(--ease-inout) infinite; }
+@keyframes loaderEnterBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+.loader__skip {
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(251,247,240,0.55);
+  padding: 0.4rem 0.8rem;
+  transition: color 0.3s;
+}
+.loader__skip:hover { color: var(--gold-light); }
+
+/* ---------- The reveal: curtains part ---------- */
+.loader.is-open .loader__curtain--l { transform: translateX(-102%); }
+.loader.is-open .loader__curtain--r { transform: translateX(102%); }
+.loader.is-open .loader__valance    { transform: translateY(-102%); transition: transform 1s var(--ease-inout); }
+.loader.is-open .loader__stage      { opacity: 0; transform: scale(0.94); }
+
+/* ---------- No-JS / reduced-motion fallbacks ---------- */
+.no-js .loader { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .loader__scratch { display: none; }      /* JS also skips it; hide just in case */
+  .loader__hint { animation: none; }
+  .loader.is-scratched .loader__enter { animation: none; }
+}
+
+/* small screens: give the card + controls a touch more room */
+@media (max-width: 420px) {
+  .loader__stage { gap: 1.1rem; }
+  .loader__tie { display: none; }          /* keep the seam clean on tiny screens */
+}

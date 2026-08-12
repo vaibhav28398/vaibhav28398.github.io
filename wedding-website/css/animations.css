@@ -1,0 +1,229 @@
+/* =============================================================
+   animations.css · keyframes, reveal states, preloader
+   ============================================================= */
+
+/* ---------- Keyframes ---------- */
+@keyframes scrollDown {
+  0%   { top: -50%; }
+  100% { top: 100%; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
+}
+
+@keyframes flipNum {
+  0%   { transform: rotateX(-90deg); opacity: 0; }
+  100% { transform: rotateX(0);      opacity: 1; }
+}
+
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes spinRing {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0)   rotate(0deg);   opacity: 0; }
+  10%  { opacity: 0.9; }
+  100% { transform: translateY(-120px) rotate(40deg); opacity: 0; }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================================
+   PRELOADER
+   ============================================================ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  transition: opacity 0.6s var(--ease-out);
+}
+.preloader.is-done { opacity: 0; pointer-events: none; }
+.preloader.is-done .preloader__curtain--l { transform: translateX(-100%); }
+.preloader.is-done .preloader__curtain--r { transform: translateX(100%); }
+
+.preloader__curtain {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 51%;
+  background: var(--charcoal);
+  z-index: -1;
+  transition: transform 0.8s 0.2s var(--ease-inout);
+}
+.preloader__curtain--l { left: 0; }
+.preloader__curtain--r { right: 0; }
+
+.preloader__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+.preloader__ring { width: 130px; height: 130px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); }
+.preloader__circle {
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 339;
+  stroke-dashoffset: 339;
+  transform-origin: center;
+  animation: preloadDraw 2s var(--ease-inout) infinite;
+}
+@keyframes preloadDraw {
+  0%   { stroke-dashoffset: 339; transform: rotate(0deg); }
+  50%  { stroke-dashoffset: 60; }
+  100% { stroke-dashoffset: 339; transform: rotate(360deg); }
+}
+.preloader__monogram {
+  font-family: var(--font-serif);
+  font-size: 3.4rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--ink);
+}
+.preloader__monogram em {
+  font-family: var(--font-script);
+  font-style: italic;
+  color: var(--gold-deep);
+  font-size: 1.4em;
+}
+.preloader__label {
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  overflow: hidden;
+}
+.preloader__label {
+  background: linear-gradient(90deg, var(--ink-soft) 25%, var(--gold-deep) 50%, var(--ink-soft) 75%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2.4s linear infinite;
+}
+
+/* Lock scroll while preloading */
+body.is-loading { overflow: hidden; height: 100vh; }
+
+/* No-JS fallback: never trap the visitor behind the preloader or hidden hero */
+.no-js .preloader { display: none; }
+.no-js .hero__amp,
+.no-js .hero__scroll,
+.no-js .hero__eyebrow[data-reveal],
+.no-js .hero__date[data-reveal],
+.no-js .btn--hero[data-reveal] { opacity: 1; transform: none; }
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(38px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  will-change: opacity, transform;
+}
+.js [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+/* Stagger children within revealed grids */
+.events__grid .event-card { transition-delay: 0s; }
+.events__grid .event-card.is-visible:nth-child(1) { transition-delay: 0.05s; }
+.events__grid .event-card.is-visible:nth-child(2) { transition-delay: 0.13s; }
+.events__grid .event-card.is-visible:nth-child(3) { transition-delay: 0.21s; }
+.events__grid .event-card.is-visible:nth-child(4) { transition-delay: 0.29s; }
+
+.travel__cards .travel-info.is-visible:nth-child(2) { transition-delay: 0.12s; }
+.travel__cards .travel-info.is-visible:nth-child(3) { transition-delay: 0.24s; }
+
+/* Gallery items rise + fade in with stagger via JS-set --i */
+.js .gallery__item {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 0.06s);
+}
+.js .gallery__item.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+
+/* ---------- Split-text hero names ---------- */
+.hero__name .char {
+  display: inline-block;
+  transform: translateY(120%) rotate(6deg);
+  opacity: 0;
+}
+.is-loaded .hero__name .char {
+  animation: charIn 1s var(--ease-out) forwards;
+}
+@keyframes charIn {
+  to { transform: translateY(0) rotate(0); opacity: 1; }
+}
+/* stagger applied inline via --ci */
+.hero__name .char { animation-delay: calc(0.5s + var(--ci, 0) * 0.05s); }
+
+/* amp + eyebrow + date pop after names */
+.is-loaded .hero__eyebrow[data-reveal],
+.is-loaded .hero__date[data-reveal],
+.is-loaded .btn--hero[data-reveal] {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero__eyebrow[data-reveal] { transition-delay: 0.9s; }
+.hero__date[data-reveal] { transition-delay: 1.05s; }
+.btn--hero[data-reveal] { transition-delay: 1.2s; }
+.hero__amp { opacity: 0; transform: scale(0.4) rotate(-20deg); transition: opacity 0.8s var(--ease-out), transform 0.9s var(--ease-out); transition-delay: 0.95s; }
+.is-loaded .hero__amp { opacity: 1; transform: scale(1) rotate(0); }
+
+.hero__scroll { opacity: 0; transition: opacity 1s 1.6s var(--ease-out); }
+.is-loaded .hero__scroll { opacity: 1; }
+
+/* Petals canvas */
+.petals-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Reduced motion — respect user preference
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal], .gallery__item, .hero__name .char {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .petals-canvas { display: none; }
+  .marquee__track { animation: none; }
+}

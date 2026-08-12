@@ -1,0 +1,248 @@
+/* =============================================================
+   responsive.css · breakpoints + mobile-unique elements
+   Strategy: desktop-first refinements, then tablet, then phone.
+   Mobile gets a bottom TABBAR, vertical story timeline, and a
+   full-screen overlay menu instead of the inline nav.
+   ============================================================= */
+
+/* ============================================================
+   LARGE TABLET / SMALL LAPTOP  (<= 1080px)
+   ============================================================ */
+@media (max-width: 1080px) {
+  .events__grid { grid-template-columns: repeat(2, 1fr); }
+  .event-card--feature { grid-column: 1 / -1; }
+  .rsvp__panel { grid-template-columns: 1fr; }
+  .rsvp__aside { padding-bottom: 2.5rem; }
+}
+
+/* ============================================================
+   TABLET  (<= 900px)
+   ============================================================ */
+@media (max-width: 900px) {
+  .travel__cards { grid-template-columns: 1fr; max-width: 520px; }
+  .gallery__grid { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 180px; }
+}
+
+/* ============================================================
+   MOBILE  (<= 720px)  — the big shift
+   ============================================================ */
+@media (max-width: 720px) {
+  :root { --header-h: 64px; }
+  body { font-size: 17px; }
+
+  /* ---- Nav: hide inline links, show hamburger ---- */
+  .nav__links { display: none; }
+  .nav__toggle { display: block; }
+
+  /* ---- Hero tuned for portrait ---- */
+  .hero { min-height: 100svh; }
+  .hero__names { font-size: clamp(3.4rem, 21vw, 6rem); }
+  .hero__date { letter-spacing: 0.16em; }
+  .hero__frame { inset: 10px; }
+
+  /* ---- STORY becomes a vertical timeline (mobile-unique) ---- */
+  .story__pin {
+    position: static;   /* cancel desktop sticky pin */
+    height: auto;
+    display: block;
+    overflow: visible;
+    padding: 1rem 0 2rem;
+  }
+  .story__track {
+    flex-direction: column;
+    gap: 0;
+    padding: 0 var(--gutter);
+    transform: none !important;   /* cancel any JS horizontal transform */
+    position: relative;
+  }
+  /* vertical spine line */
+  .story__track::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--gutter) + 13px);
+    top: 10px; bottom: 10px;
+    width: 2px;
+    background: linear-gradient(var(--gold-light), var(--gold), var(--gold-light));
+    opacity: 0.5;
+  }
+  .story-card {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 1rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 1.4rem 0;
+    align-items: start;
+  }
+  /* timeline dot */
+  .story-card::before {
+    content: "";
+    grid-row: 1 / -1;
+    width: 14px; height: 14px;
+    margin: 8px auto 0 6px;
+    border-radius: 50%;
+    background: var(--gold-deep);
+    box-shadow: 0 0 0 5px var(--cream), 0 0 0 6px var(--gold-light);
+    position: relative;
+    z-index: 1;
+  }
+  .story-card__img {
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    aspect-ratio: 16/11;
+  }
+  .story-card__text { padding: 1rem 0 0; }
+  .story-card__text h3 { font-size: 1.6rem; }
+
+  .story-card--final {
+    background: var(--charcoal);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 2rem 1.4rem;
+    margin-top: 1rem;
+    min-height: auto;
+  }
+  .story-card--final::before { background: var(--gold-light); box-shadow: 0 0 0 5px var(--charcoal), 0 0 0 6px var(--gold); }
+  .story-card__amp { font-size: 3.4rem; }
+  .story__hint { display: none; }
+  .story__pin .story-card__text--center { padding: 0; }
+
+  /* ---- Countdown: 2x2 grid on phones ---- */
+  .countdown__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.4rem 1rem;
+    max-width: 360px;
+    margin: 2.4rem auto 1.2rem;
+  }
+  .count-cell {
+    background: rgba(251,247,240,0.06);
+    border: 1px solid rgba(230,207,156,0.22);
+    border-radius: 12px;
+    padding: 1.2rem 0.5rem;
+    backdrop-filter: blur(4px);
+  }
+  .count-cell:not(:last-child)::after { display: none; }  /* remove colon separators */
+  .count-cell__num { font-size: clamp(2.6rem, 15vw, 3.6rem); }
+
+  /* ---- Events single column ---- */
+  .events__grid { grid-template-columns: 1fr; max-width: 480px; }
+  .event-card { padding: 2rem 1.6rem; }
+
+  /* ---- Gallery: refined 2-col mosaic ---- */
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; gap: 0.55rem; }
+  .gallery__item--wide { grid-column: span 2; }
+  .gallery__item--tall { grid-row: span 2; }
+  .gallery__view { opacity: 1; transform: none; }  /* always show label on touch */
+
+  .lightbox__nav { width: 46px; height: 46px; font-size: 2.2rem; }
+
+  /* ---- RSVP full-width ---- */
+  .choice__opt { min-width: 100%; }
+
+  /* ---- Add breathing room so tabbar never covers content ---- */
+  main { padding-bottom: 0; }
+  .footer { padding-bottom: 7rem; }
+
+  /* ============================================================
+     MOBILE TABBAR  (unique mobile element)
+     ============================================================ */
+  .tabbar {
+    display: flex;
+    position: fixed;
+    left: 50%;
+    bottom: max(0.7rem, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 140;
+    width: min(94%, 440px);
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0.4rem;
+    background: rgba(251, 247, 240, 0.82);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    border: 1px solid rgba(43,38,34,0.08);
+    border-radius: 22px;
+    box-shadow: 0 18px 40px -14px rgba(43,38,34,0.4);
+    transition: transform 0.45s var(--ease-out), opacity 0.4s;
+  }
+  .tabbar.is-hidden { transform: translateX(-50%) translateY(160%); opacity: 0; }
+
+  .tabbar__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.2rem;
+    color: var(--ink-soft);
+    border-radius: 14px;
+    transition: color 0.3s, background 0.3s, transform 0.3s;
+  }
+  .tabbar__item svg {
+    width: 22px; height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .tabbar__item span {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .tabbar__item.is-active { color: var(--gold-deep); }
+  .tabbar__item.is-active svg { transform: translateY(-2px) scale(1.08); }
+
+  .tabbar__item--cta {
+    color: var(--cream);
+    background: var(--gold-deep);
+    margin: -0.9rem 0.1rem 0;
+    box-shadow: 0 10px 22px -8px var(--gold-deep);
+  }
+  .tabbar__item--cta.is-active { color: var(--cream); }
+  .tabbar__item--cta svg { fill: rgba(251,247,240,0.15); }
+
+  /* Custom cursor never on touch */
+  .cursor, .cursor-dot { display: none !important; }
+}
+
+/* ============================================================
+   SMALL PHONES  (<= 400px)
+   ============================================================ */
+@media (max-width: 400px) {
+  :root { --gutter: 1.1rem; }
+  .hero__names { font-size: clamp(3rem, 22vw, 4.6rem); }
+  .count-cell__num { font-size: 2.4rem; }
+  .tabbar__item span { font-size: 0.55rem; }
+  .section__title { font-size: clamp(2rem, 9vw, 2.8rem); }
+}
+
+/* ============================================================
+   LANDSCAPE PHONES — keep hero usable
+   ============================================================ */
+@media (max-height: 480px) and (orientation: landscape) {
+  .hero { min-height: 560px; }
+  .story__pin { height: auto; }
+}
+
+/* ============================================================
+   TOUCH DEVICES — disable hover-only motion niceties
+   ============================================================ */
+@media (hover: none) {
+  .event-card__glow { display: none; }
+  .story-card:hover .story-card__img img { transform: none; }
+}
+
+/* ============================================================
+   LARGE SCREENS — cap the scale
+   ============================================================ */
+@media (min-width: 1600px) {
+  :root { --maxw: 1400px; }
+  body { font-size: 19px; }
+}

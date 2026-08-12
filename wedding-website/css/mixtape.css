@@ -1,0 +1,524 @@
+/* =============================================================
+   mixtape.css · "The First-Dance Mixtape" song-request wall
+   A retro record player where guests drop song requests onto a
+   growing tracklist. All selectors live under .mixtape__ so this
+   drops into the cascade without touching anything else. Colours,
+   type and easing all come from the :root tokens in style.css —
+   nothing is redefined here.
+   ============================================================= */
+
+/* ---------- Section shell ---------- */
+.mixtape {
+  background: linear-gradient(180deg, var(--cream), var(--cream-2));
+}
+
+.mixtape__head {
+  max-width: 700px;
+  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+  text-align: center;
+}
+
+.mixtape__sub {
+  margin-top: 1.1rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+/* ---------- Layout: turntable + form/list ---------- */
+.mixtape__body {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+/* ============================================================
+   TURNTABLE  ·  pure CSS, no images
+   ============================================================ */
+.mixtape__deck {
+  position: sticky;
+  top: calc(var(--header-h) + 1.5rem);
+  background: linear-gradient(165deg, #38302a, var(--charcoal));
+  border-radius: 18px;
+  padding: clamp(2rem, 4vw, 2.8rem);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.mixtape__platter {
+  position: relative;
+  width: clamp(190px, 30vw, 260px);
+  height: clamp(190px, 30vw, 260px);
+  margin-bottom: 1.6rem;
+}
+
+/* the plinth the record sits on, just a soft dark disc peeking out from under it */
+.mixtape__plinth {
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #4a4038, #1c1916 70%);
+  box-shadow: inset 0 0 0 1px rgba(230, 207, 156, 0.08), var(--shadow-sm);
+}
+
+.mixtape__record {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      #232019 0px,
+      #232019 2px,
+      #17140f 3px,
+      #17140f 4px
+    );
+  box-shadow: 0 0 0 1px rgba(230, 207, 156, 0.12), inset 0 0 30px rgba(0, 0, 0, 0.6);
+  animation: mixtapeSpin 3.2s linear infinite;
+  animation-play-state: paused;
+}
+.mixtape__record.is-spinning { animation-play-state: running; }
+
+/* a faint highlight sweeping across the vinyl so it reads as glossy, not flat */
+.mixtape__record::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 200deg, rgba(255, 255, 255, 0.16), transparent 40%, transparent 80%, rgba(255, 255, 255, 0.08));
+}
+
+.mixtape__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  height: 42%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold-deep) 65%, var(--terracotta) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 0 0 2px rgba(28, 25, 22, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.35);
+}
+.mixtape__label-text {
+  font-family: var(--font-sans);
+  font-size: clamp(0.56rem, 1.4vw, 0.68rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--charcoal);
+  line-height: 1.3;
+  padding: 0 0.3rem;
+}
+.mixtape__label-text b { display: block; font-family: var(--font-script); font-size: 1.5em; font-weight: 400; }
+
+/* the spindle hole, dead center */
+.mixtape__spindle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--charcoal);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+/* the tonearm, pivoted top-right, resting across the edge of the record */
+.mixtape__tonearm {
+  position: absolute;
+  top: -6%;
+  right: -10%;
+  width: 46%;
+  height: 78%;
+  transform-origin: top right;
+  transform: rotate(24deg);
+  transition: transform 0.6s var(--ease-inout);
+  z-index: 3;
+  pointer-events: none;
+}
+.mixtape__record.is-spinning ~ .mixtape__tonearm {
+  transform: rotate(8deg);
+}
+.mixtape__tonearm::before {
+  /* the arm itself */
+  content: "";
+  position: absolute;
+  top: 4%;
+  right: 6%;
+  width: 6px;
+  height: 88%;
+  background: linear-gradient(180deg, var(--gold-light), var(--gold-deep));
+  border-radius: 6px;
+  box-shadow: var(--shadow-sm);
+}
+.mixtape__tonearm::after {
+  /* the headshell/needle nub at the bottom end */
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 10px;
+  background: var(--terracotta);
+  border-radius: 3px;
+  box-shadow: var(--shadow-sm);
+}
+.mixtape__pivot {
+  position: absolute;
+  top: -6%;
+  right: -10%;
+  width: 16px;
+  height: 16px;
+  transform: translate(50%, -50%);
+  border-radius: 50%;
+  background: var(--gold-deep);
+  box-shadow: 0 0 0 3px rgba(28, 25, 22, 0.6);
+  z-index: 4;
+}
+
+.mixtape__deck-caption {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* the little status dot is drawn with ::before so JS can just set
+   textContent on the caption without clobbering any markup */
+.mixtape__deck-caption::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--sage);
+  box-shadow: 0 0 8px 1px rgba(138, 154, 123, 0.7);
+}
+.mixtape__deck-caption[data-state="paused"]::before {
+  background: var(--ink-soft);
+  box-shadow: none;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+.mixtape__panel {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: clamp(1.8rem, 4vw, 2.4rem);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.6rem;
+  position: relative;
+  overflow: hidden;
+}
+.mixtape__panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold-deep), var(--terracotta));
+  opacity: 0.7;
+}
+
+.mixtape__panel-title {
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+}
+.mixtape__panel-title .script { color: var(--gold-deep); font-size: 1.15em; }
+
+.mixtape__form {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1rem 1rem;
+}
+.mixtape__field {
+  position: relative;
+  grid-column: span 1;
+}
+.mixtape__field--name { grid-column: 1 / -1; }
+
+.mixtape__field label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.45rem;
+}
+.mixtape__field input {
+  width: 100%;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--cream-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
+}
+.mixtape__field input:focus {
+  outline: none;
+  border-color: var(--gold-deep);
+  background: var(--cream);
+}
+.mixtape__field input:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+
+/* gentle nudge for the required song field, mirrors fortune.css's pattern */
+.mixtape__hint {
+  display: block;
+  min-height: 1rem;
+  margin-top: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-style: italic;
+  color: var(--gold-deep);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.mixtape__field.is-nudged .mixtape__hint { opacity: 1; transform: translateY(0); }
+.mixtape__field.is-nudged input { border-color: var(--gold); animation: mixtapeNudge 0.4s var(--ease-out); }
+
+.mixtape__form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.3rem;
+}
+
+/* ---------- Live counter + sort control ---------- */
+.mixtape__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0 0.2rem;
+}
+.mixtape__count {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.mixtape__count b { color: var(--gold-deep); font-weight: 500; }
+
+.mixtape__sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mixtape__sort label {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.mixtape__sort select {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+}
+.mixtape__sort select:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   TRACKLIST
+   ============================================================ */
+.mixtape__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.mixtape__track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  transition: border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.mixtape__track:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-sm);
+}
+
+/* plays once when a fresh row lands in the DOM */
+.mixtape__track.is-mounting {
+  animation: mixtapeRowIn 0.5s var(--ease-out) both;
+}
+
+.mixtape__track-index {
+  flex: 0 0 auto;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gold-deep);
+  font-variant-numeric: tabular-nums;
+  width: 1.8rem;
+}
+
+.mixtape__track-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.mixtape__track-song {
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.mixtape__track-artist {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.mixtape__track-by {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.mixtape__track-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mixtape__like {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  background: var(--cream-2);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 0.45rem 0.85rem;
+  transition: border-color 0.3s var(--ease-out), color 0.3s var(--ease-out), transform 0.2s var(--ease-out);
+}
+.mixtape__like:hover { border-color: var(--terracotta); color: var(--terracotta); }
+.mixtape__like:active { transform: scale(0.94); }
+.mixtape__like:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+.mixtape__like-heart { font-size: 0.95em; }
+.mixtape__like[aria-pressed="true"] {
+  color: var(--terracotta);
+  border-color: var(--terracotta);
+  background: rgba(181, 98, 63, 0.1);
+}
+.mixtape__like-count { font-variant-numeric: tabular-nums; }
+
+.mixtape__remove {
+  flex: 0 0 auto;
+  width: 1.9rem;
+  height: 1.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--ink-soft);
+  border-radius: 50%;
+  transition: background 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+.mixtape__remove:hover { background: rgba(181, 98, 63, 0.14); color: var(--terracotta); }
+.mixtape__remove:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+
+.mixtape__empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 900px) {
+  .mixtape__body { grid-template-columns: 1fr; }
+  .mixtape__deck { position: static; }
+}
+
+@media (max-width: 480px) {
+  .mixtape__form { grid-template-columns: 1fr; }
+  .mixtape__field { grid-column: 1 / -1; }
+  .mixtape__form-actions { justify-content: stretch; }
+  .mixtape__form-actions .btn { width: 100%; justify-content: center; }
+  .mixtape__toolbar { flex-direction: column; align-items: stretch; }
+  .mixtape__sort { justify-content: space-between; }
+  .mixtape__track { flex-wrap: wrap; }
+  .mixtape__track-actions { width: 100%; justify-content: flex-end; margin-top: 0.4rem; }
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes mixtapeSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes mixtapeRowIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mixtapeNudge {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}
+
+/* ============================================================
+   REDUCED MOTION  ·  the deck stops, everything else still works
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .mixtape__record {
+    animation: none !important;
+  }
+  .mixtape__tonearm {
+    transition: none !important;
+  }
+  .mixtape__track.is-mounting {
+    animation: none !important;
+  }
+  .mixtape__like:active {
+    transform: none;
+  }
+}
